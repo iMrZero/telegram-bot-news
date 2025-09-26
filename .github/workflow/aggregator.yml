@@ -1,0 +1,43 @@
+name: News Aggregator Cron
+
+on:
+  schedule:
+    # Runs at 00:00 UTC (midnight) every day. You can adjust this time.
+    - cron: "0 0 * * *"
+  # Allows you to manually trigger the workflow from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  run-aggregator:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Dependencies
+        # Your package.json is in the root, so this command is correct
+        run: npm install
+
+      - name: Run Aggregator Script
+        # This executes your main.mjs script
+        run: node main.mjs
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+      # Optional: Add a step here to commit the updated database file back to the repository if you are using SQLite with the file committed.
+      # However, for a production bot, using an external database service is better.
+
+      - name: Commit Database Update (If necessary)
+        # Only needed if you are storing the database (e.g., SQLite file) inside the repo and want to commit the changes.
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add . # Add your updated database file here (e.g., git add news.db)
+          git commit -m "🤖 Automated news update" || echo "No changes to commit"
+          git push

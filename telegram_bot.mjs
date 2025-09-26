@@ -1,6 +1,6 @@
 import TelegramBot from "node-telegram-bot-api/lib/telegram.js";
 import { db } from "./connectDB.mjs";
-const token = "8455314102:AAEVpEOK7wwcsqpkYhqq9nDqBOaMUTKch";
+const token = process.env.TELEGRAM_BOT_TOKENs;
 const bot = new TelegramBot(token, { polling: true });
 const stmt = db.prepare("SELECT * FROM articles");
 let messages_id = [];
