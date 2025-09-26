@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyDhUSgSdsn4_uSxu49sYaymUF5wkHq9Kk0",
+  apiKey: "AIzaSyDhUSgSdsn4_uSxu49sYaymUF5wkHq9K",
 });
 // summarizeText();
 export async function summarize(text) {
